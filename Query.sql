@@ -11,7 +11,7 @@ GO
 
 -- Câu 1:
 -- - Find the employee who generates the most invoices.
--- - Nghĩa
+-- - Phong
 
 SELECT *
 FROM Employee
@@ -24,7 +24,7 @@ WHERE Employee_ID = ANY (SELECT TOP 1 WITH TIES Employee_ID
 -- Câu 2:
 -- - Display purchase history of member customers with phone number '0956789012'
 -- - Information to display: Bill ID, Create_Date, Create_Time, Product Name, Product Amount
--- - Chương
+-- - Đạt
 SELECT B.Bill_ID, B.Create_Date, B.Create_Time, P.Product_Name, BD.Product_Amount
 FROM Bill B
 	JOIN Customer C ON B.Customer_Phone = C.Customer_Phone
@@ -37,7 +37,7 @@ ORDER BY B.Bill_ID ASC, P.Product_ID ASC
 -- Câu 3:
 -- - Show the number of times the vouchers have been applied
 -- - Information to display: Voucher ID, Total time applied
--- - Vương
+-- - Duy
 
 SELECT      v.Voucher_ID AS [Voucher ID],
             COUNT(*) AS [Total times applied]
@@ -50,7 +50,7 @@ ORDER BY    [Total times applied] DESC
 -- Câu 4:
 -- - Show list of invoices of employee 'Nguyễn Thị Thúy'
 -- - Information to display: Bill ID, Customer Phone, Employee ID
--- - Nghĩa
+-- - Duy
 
 SELECT Bill_ID, Customer_Phone, Employee_ID
 FROM Bill
@@ -62,7 +62,7 @@ WHERE Employee_ID = (SELECT Employee_ID
 -- Câu 5:
 -- - Show total sales of each month
 -- - Information to display: Year, Month, Total revenue
--- - Vương
+-- - Khoa
 
 SELECT      YEAR(b.Payment_Date) AS [Year],
             MONTH(b.Payment_Date) AS [Month],
@@ -75,7 +75,7 @@ GROUP BY    YEAR(b.Payment_Date),
 -- Câu 6:
 -- - Showing best seller products of July
 -- - Information to display: Product Name, Total sold
--- - Thúy
+-- - Khoa
 
 /*	SELECT p.Product_Name, SUM(bd.Product_Amount) AS Total_sold
 	FROM Bill_Data AS bd
@@ -96,7 +96,7 @@ GROUP BY    YEAR(b.Payment_Date),
 -- Câu 7:
 -- - Display the member customer with the largest purchase invoice in June and that invoice information
 -- - Information to display: Bill ID, Final Price
--- - Thúy
+-- - Quân
 
 /*	SELECT c.Customer_Name, b.Bill_ID, b.Final_Price
 	FROM Customer c
@@ -115,7 +115,7 @@ GROUP BY    YEAR(b.Payment_Date),
 -- Câu 8:
 -- - Display product information with the most purchases of customers who do not register for membership
 -- - Information to display: Product ID, Product Name, Total amount sold
--- - Chương
+-- - Quân
 
 SELECT TOP 1 WITH TIES P.Product_ID, P.Product_Name, SUM(BD.Product_Amount) AS [Total amount sold]
 FROM Product P
