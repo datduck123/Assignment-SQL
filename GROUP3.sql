@@ -139,7 +139,7 @@ REFERENCES Product (Product_ID);
 GO
 
 -- STEP 11: Trigger for Customer table
--- Assign: Nghĩa
+-- Assign: Dat
 -- Format: SĐT 10 số
 -- VD: 03xxxxxxxx
 CREATE TRIGGER CheckCustomerOnInsert
@@ -161,7 +161,7 @@ Go
 
 
 -- STEP 12: Trigger for Employee table
--- Assign: Thúy
+-- Assign: Phong
 -- Format: EMPQN001, EMPQN002, EMPQN003,...
 CREATE TRIGGER CheckEmployeeOnInsert
 ON Employee
@@ -183,7 +183,7 @@ GO
 
 
 -- STEP 13: Trigger for Product table
--- Assign: Nghĩa
+-- Assign: Quan
 -- Format: PD001, PD002, PD003,...
 CREATE TRIGGER CheckProductOnInsert
 ON Product
@@ -204,7 +204,7 @@ GO
 
 
 -- STEP 14: Trigger for Voucher table
--- Assign: Chương
+-- Assign: Duy
 -- Format: VC001, VC002, VC003,...
 CREATE TRIGGER CheckVoucherOnInsert
 ON Voucher
@@ -227,7 +227,7 @@ GO
 
 
 -- STEP 15: Trigger for Bill table
--- Assign: Vương
+-- Assign: Khoa
 -- Format: BILL000001, BILL000002, BILL000003,...
 CREATE TRIGGER CheckBillOnInsert
 ON Bill
@@ -249,7 +249,7 @@ GO
 
 
 -- STEP 16: Trigger for Bill_Data table
--- Assign: Thúy
+-- Assign: Phong
 -- Format:
 -- - BILL000001, BILL000002, BILL000003,...
 -- - PD001, PD002, PD003,...
@@ -273,7 +273,7 @@ GO
 ------------------------------------------------------------
 
 -- STEP 17: Insert data for Customer table
--- Assign: Nghĩa
+-- Assign: Duy
 -- Format: SĐT 10 số
 -- VD: 03xxxxxxxx
 INSERT INTO Customer (Customer_Phone, Customer_Name, Point)
@@ -304,7 +304,7 @@ GO
 
 
 -- STEP 19: Insert data for Product table
--- Assign: Nghĩa
+-- Assign: Dat
 -- Format: PD001, PD002, PD003,...
 INSERT INTO Product (Product_ID, Product_Name, Price)
 VALUES
@@ -322,7 +322,7 @@ GO
 
 
 -- STEP 20: Insert data for Voucher table
--- Assign: Chương
+-- Assign: Duy
 -- Format: VC001, VC002, VC003,...
 INSERT INTO Voucher (Voucher_ID, Voucher_Description, Discount, Minimum_Price, Begin_Date, End_Date, Is_Require_Member)
 VALUES
@@ -334,7 +334,7 @@ VALUES
 GO
 
 -- STEP 15: Insert data for Bill table
--- Assign: Vương
+-- Assign: Quan
 -- Format: BILL000001, BILL000002, BILL000003,...
 INSERT INTO Bill (Bill_ID, Create_Date, Create_Time, Employee_ID, Customer_Phone)
 VALUES
@@ -373,7 +373,7 @@ GO
 
 
 -- STEP 16: Insert data for Bill_Data table
--- Assign: Thúy
+-- Assign: Phong
 -- Format:
 -- - BILL000001, BILL000002, BILL000003,...
 -- - PD001, PD002, PD003,...
