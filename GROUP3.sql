@@ -292,7 +292,7 @@ GO
 
 
 -- STEP 18: Insert data for Employee table
--- Assign: Thúy
+-- Assign: Dat
 -- Format: EMPQN001, EMPQN002, EMPQN003,...
 INSERT INTO Employee (Employee_ID, Employee_Name, Employee_Phone, Employee_Address)
 VALUES
