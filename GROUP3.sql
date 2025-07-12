@@ -1,4 +1,4 @@
-﻿--------------------------------------------------------
+--------------------------------------------------------
 --                                                    --
 -- Create a database, tables and insert data for them --
 --                                                    --
@@ -563,79 +563,78 @@ GO
 
 
 -- STEP 19: Create procedure for payment
-CREATE PROCEDURE Pay(@Bill_ID VARCHAR(10), @Given_Money INT)
+CREATE PROCEDURE Pay (
+    @Bill_ID VARCHAR(10),
+    @Given_Money INT,
+    @FakeDate DATE = NULL,
+    @FakeTime TIME = NULL
+)
 AS
 BEGIN
-	DECLARE @Final_Price	INT	= 0
-	DECLARE @Excess_Money	INT	= 0
+    DECLARE @Final_Price INT = 0
+    DECLARE @Excess_Money INT = 0
 
+    SELECT @Final_Price = Final_Price
+    FROM Bill
+    WHERE Bill_ID = @Bill_ID
 
-	-- Get @Final_Price with @Bill_ID
-	SELECT	@Final_Price = b.Final_Price
-	FROM	Bill b
-	WHERE	b.Bill_ID = @Bill_ID
+    IF @Final_Price IS NULL
+    BEGIN
+        EXEC Calculate_Bill @Bill_ID
+        SELECT @Final_Price = Final_Price
+        FROM Bill
+        WHERE Bill_ID = @Bill_ID
+    END
 
+    IF @Final_Price > @Given_Money
+    BEGIN
+        PRINT ('Error! Given_Money must be greather or equals to Final_Price!')
+        RETURN
+    END
 
-	-- Calculate Bill with @Bill_ID if @Final_Price is null
-	IF @Final_Price IS NULL
-	BEGIN
-		EXEC Calculate_Bill @Bill_ID
+    SET @Excess_Money = @Given_Money - @Final_Price
 
-		SELECT	@Final_Price = b.Final_Price
-		FROM	Bill b
-		WHERE	b.Bill_ID = @Bill_ID
-	END
+    DECLARE @UseDate DATE = ISNULL(@FakeDate, CAST(GETDATE() AS DATE))
+    DECLARE @UseTime TIME = ISNULL(@FakeTime, CAST(GETDATE() AS TIME))
 
-	IF @Final_Price > @Given_Money
-	BEGIN
-		PRINT ('Error! Given_Money must be greather or equals to Final_Price!')
-		RETURN
-	END
-
-
-	-- Calculate @Excess_Money
-	SET @Excess_Money = @Given_Money - @Final_Price
-
-
-	-- Update Bill with @Bill_ID
-	UPDATE	Bill
-	SET		Payment_Date	= CAST(GETDATE() AS DATE),
-			Payment_Time	= CAST(GETDATE() AS TIME),
-			Given_Money		= @Given_Money,
-			Excess_Money	= @Excess_Money
-	
-	WHERE	Bill_ID			= @Bill_ID
+    UPDATE Bill
+    SET 
+        Payment_Date = @UseDate,
+        Payment_Time = @UseTime,
+        Given_Money = @Given_Money,
+        Excess_Money = @Excess_Money
+    WHERE Bill_ID = @Bill_ID
 END
 GO
 
-EXEC Pay 'BILL000001', 500000
-EXEC Pay 'BILL000002', 200000
-EXEC Pay 'BILL000003', 600000
-EXEC Pay 'BILL000004', 350000
-EXEC Pay 'BILL000005', 980000
-EXEC Pay 'BILL000006', 200000
-EXEC Pay 'BILL000007', 650000
-EXEC Pay 'BILL000008', 750000
-EXEC Pay 'BILL000009', 450000
-EXEC Pay 'BILL000010', 200000
-EXEC Pay 'BILL000011', 215000
-EXEC Pay 'BILL000012', 400000
-EXEC Pay 'BILL000013', 250000
-EXEC Pay 'BILL000014', 120000
-EXEC Pay 'BILL000015', 160000
-EXEC Pay 'BILL000016', 375000
-EXEC Pay 'BILL000017', 420000
-EXEC Pay 'BILL000018', 1800000
-EXEC Pay 'BILL000019', 220000
-EXEC Pay 'BILL000020', 175000
-EXEC Pay 'BILL000021', 950000
-EXEC Pay 'BILL000022', 250000
-EXEC Pay 'BILL000023', 300000
-EXEC Pay 'BILL000024', 75000
-EXEC Pay 'BILL000025', 300000
-EXEC Pay 'BILL000026', 270000
-EXEC Pay 'BILL000027', 500000
-EXEC Pay 'BILL000028', 350000
-EXEC Pay 'BILL000029', 720000
-EXEC Pay 'BILL000030', 315000
-EXEC Pay 'BILL000031', 275000
+EXEC Pay 'BILL000001', 690000, '2025-07-13', '09:23:00'
+EXEC Pay 'BILL000002', 731000, '2025-07-02', '17:41:00'
+EXEC Pay 'BILL000003', 745000, '2025-07-26', '14:07:00'
+EXEC Pay 'BILL000004', 1072000, '2025-07-08', '11:35:00'
+EXEC Pay 'BILL000005', 1361000, '2025-07-17', '10:15:00'
+EXEC Pay 'BILL000006', 429000, '2025-07-31', '16:02:00'
+EXEC Pay 'BILL000007', 1376000, '2025-07-01', '08:45:00'
+EXEC Pay 'BILL000008', 979000, '2025-07-22', '09:12:00'
+EXEC Pay 'BILL000009', 750000, '2025-07-04', '13:50:00'
+EXEC Pay 'BILL000010', 433000, '2025-07-10', '17:15:00'
+EXEC Pay 'BILL000011', 517000, '2025-07-27', '10:30:00'
+EXEC Pay 'BILL000012', 916000, '2025-07-18', '15:45:00'
+EXEC Pay 'BILL000013', 490000, '2025-07-03', '14:18:00'
+EXEC Pay 'BILL000014', 417000, '2025-07-21', '09:39:00'
+EXEC Pay 'BILL000015', 461000, '2025-07-05', '11:04:00'
+EXEC Pay 'BILL000016', 641000, '2025-07-14', '08:30:00'
+EXEC Pay 'BILL000017', 523000, '2025-07-28', '16:11:00'
+EXEC Pay 'BILL000018', 4717000, '2025-07-09', '12:55:00'
+EXEC Pay 'BILL000019', 371000, '2025-07-24', '13:22:00'
+EXEC Pay 'BILL000020', 720000, '2025-07-19', '10:48:00'
+EXEC Pay 'BILL000021', 1221000, '2025-07-07', '14:41:00'
+EXEC Pay 'BILL000022', 705000, '2025-07-12', '11:20:00'
+EXEC Pay 'BILL000023', 604000, '2025-07-23', '17:01:00'
+EXEC Pay 'BILL000024', 485000, '2025-07-06', '13:33:00'
+EXEC Pay 'BILL000025', 721000, '2025-07-11', '15:27:00'
+EXEC Pay 'BILL000026', 613000, '2025-07-15', '10:09:00'
+EXEC Pay 'BILL000027', 581000, '2025-07-16', '09:50:00'
+EXEC Pay 'BILL000028', 584000, '2025-07-20', '14:05:00'
+EXEC Pay 'BILL000029', 1388000, '2025-07-30', '11:11:00'
+EXEC Pay 'BILL000030', 626000, '2025-07-29', '08:18:00'
+EXEC Pay 'BILL000031', 320000, '2025-07-25', '12:42:00'
