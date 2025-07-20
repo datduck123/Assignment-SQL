@@ -124,3 +124,48 @@ FROM Product P
 WHERE BL.Customer_Phone IS NULL
 GROUP BY P.Product_ID, P.Product_Name
 ORDER BY [Total amount sold] DESC
+
+-- Câu 9: Write trigger:
+-- Orders with total amount < 50,000 VND are not allowed.
+-- Automatically add bonus points to customers (1 point for every 50,000 VND).
+-- Phong
+
+CREATE OR ALTER TRIGGER trg_ValidateAndRewardOrder
+ON Orders
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @OrderID INT, @CustomerID INT, @TotalAmount MONEY;
+
+    SELECT TOP 1
+        @OrderID = i.OrderID,
+        @CustomerID = i.CustomerID,
+        @TotalAmount = i.TotalAmount
+    FROM inserted i;
+
+    -- Check if total amount is valid
+    IF @TotalAmount < 50000
+    BEGIN
+        -- Cancel the order (delete from Orders table)
+        DELETE FROM Orders WHERE OrderID = @OrderID;
+
+        -- Raise an error to inform the user
+        RAISERROR(N'The total amount must be at least 50,000 VND.', 16, 1);
+        RETURN;
+    END
+
+    -- Add bonus points (1 point per 50,000 VND)
+    DECLARE @PointBonus INT = FLOOR(@TotalAmount / 50000);
+
+    UPDATE Customer
+    SET Point = Point + @PointBonus
+    WHERE CustomerID = @CustomerID;
+END;
+
+-- TEST
+-- (deleted, erorr)
+INSERT INTO Orders (OrderID, CustomerID, TotalAmount) VALUES (201, 1, 30000);
+
+-- (hold, bonus)
+INSERT INTO Orders (OrderID, CustomerID, TotalAmount) VALUES (202, 1, 120000);
+
