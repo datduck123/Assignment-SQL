@@ -142,7 +142,7 @@ BEGIN
     IF EXISTS (
         SELECT 1
         FROM Inserted
-        WHERE Customer_Phone NOT LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+        WHERE Customer_Phone NOT LIKE '[0-9][1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
             OR Point < 0
     )
     BEGIN
@@ -164,7 +164,7 @@ BEGIN
         SELECT 1
         FROM Inserted
         WHERE Employee_ID NOT LIKE 'EMPQN[0-9][0-9][0-9]'
-            OR Employee_Phone NOT LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+            OR Employee_Phone NOT LIKE '[0-9][1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
     )
     BEGIN
         PRINT ('Error! Insertion canceled!')
@@ -230,7 +230,7 @@ BEGIN
         FROM Inserted
         WHERE Bill_ID NOT LIKE 'BILL[0-9][0-9][0-9][0-9][0-9][0-9]'
             OR Employee_ID NOT LIKE 'EMPQN[0-9][0-9][0-9]'
-            OR (Customer_Phone IS NOT NULL AND Customer_Phone NOT LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
+            OR (Customer_Phone IS NOT NULL AND Customer_Phone NOT LIKE '[0-9][1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
     )
     BEGIN
         PRINT ('Error! Insertion canceled!')
@@ -624,4 +624,3 @@ EXEC Pay 'BILL000029', 1638000, '2025-07-30', '11:11:00'
 EXEC Pay 'BILL000030', 876000, '2025-07-29', '08:18:00'
 EXEC Pay 'BILL000031', 570000, '2025-07-25', '12:42:00'
 GO
-
